@@ -8,25 +8,33 @@ import {
   // Header,
   // Param,
   Body,
+  // HttpException,
+  // HttpStatus,
+  UseFilters,
 } from '@nestjs/common';
 
 import { CreateEventDto } from './dto/create-event.dto';
 // import { UpdateEventDto } from './dto/update-event.dto';
 import { EventsService } from './events.service';
 import { Event } from './interfaces/event.interface';
+import { ForbiddenException } from '../common/exceptions/forbidden.exception';
+import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
 
 @Controller('events')
+@UseFilters(HttpExceptionFilter)
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
   @Get()
   async findAll(): Promise<Event[]> {
+    throw new ForbiddenException();
     console.log('This action returns all events');
     return await this.eventsService.findAll();
   }
 
   @Post()
   create(@Body() createEventDto: CreateEventDto): void {
+    throw new ForbiddenException();
     this.eventsService.create(createEventDto);
   }
 
