@@ -12,4 +12,8 @@ export class EventsService {
   async findAll(): Promise<Event[]> {
     return this.events;
   }
+
+  async findOne(id: number): Promise<Event> {
+    return this.events.find((event) => (event.id = id));
+  }
 }

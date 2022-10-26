@@ -6,19 +6,21 @@ import {
   // Delete,
   // HttpCode,
   // Header,
-  // Param,
+  Param,
   Body,
   // HttpException,
-  // HttpStatus,
+  HttpStatus,
   UseFilters,
+  ParseIntPipe,
 } from '@nestjs/common';
 
 import { CreateEventDto } from './dto/create-event.dto';
 // import { UpdateEventDto } from './dto/update-event.dto';
 import { EventsService } from './events.service';
 import { Event } from './interfaces/event.interface';
-import { ForbiddenException } from '../common/exceptions/forbidden.exception';
+// import { ForbiddenException } from '../common/exceptions/forbidden.exception';
 import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
+import { ValidationPipe } from '../common/pipes/validation.pipe';
 
 @Controller('events')
 @UseFilters(HttpExceptionFilter)
@@ -27,21 +29,27 @@ export class EventsController {
 
   @Get()
   async findAll(): Promise<Event[]> {
-    throw new ForbiddenException();
+    //throw new ForbiddenException();
     console.log('This action returns all events');
     return await this.eventsService.findAll();
   }
 
   @Post()
-  create(@Body() createEventDto: CreateEventDto): void {
-    throw new ForbiddenException();
+  create(@Body(new ValidationPipe()) createEventDto: CreateEventDto): void {
+    //throw new ForbiddenException();
     this.eventsService.create(createEventDto);
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string): string {
-  //   return `This action returns event ${id}`;
-  // }
+  @Get(':id')
+  async findOne(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ): Promise<Event> {
+    return await this.eventsService.findOne(id);
+  }
 
   // @Patch(':id')
   // update(
