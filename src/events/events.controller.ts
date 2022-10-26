@@ -12,6 +12,12 @@ import {
   HttpStatus,
   UseFilters,
   ParseIntPipe,
+  Query,
+  DefaultValuePipe,
+  ParseBoolPipe,
+  UseGuards,
+  SetMetadata,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import { CreateEventDto } from './dto/create-event.dto';
@@ -21,21 +27,34 @@ import { Event } from './interfaces/event.interface';
 // import { ForbiddenException } from '../common/exceptions/forbidden.exception';
 import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { Roles } from '../common/decorators/metadata/roles.decorator';
+import { LoggingInterceptor } from '../common/interceptors/logging.interceptor';
+import { TransformInterceptor } from '../common/interceptors/transform.interceptor';
 
 @Controller('events')
 @UseFilters(HttpExceptionFilter)
+@UseGuards(RolesGuard)
+@UseInterceptors(LoggingInterceptor)
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
   @Get()
-  async findAll(): Promise<Event[]> {
+  @UseInterceptors(TransformInterceptor)
+  async findAll(
+    @Query('activeOnly', new DefaultValuePipe(false), ParseBoolPipe)
+    activeOnly: boolean,
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe)
+    page: number,
+  ): Promise<Event[]> {
     //throw new ForbiddenException();
     console.log('This action returns all events');
     return await this.eventsService.findAll();
   }
 
   @Post()
-  create(@Body(new ValidationPipe()) createEventDto: CreateEventDto): void {
+  @Roles('admin')
+  create(@Body() createEventDto: CreateEventDto): void {
     //throw new ForbiddenException();
     this.eventsService.create(createEventDto);
   }
