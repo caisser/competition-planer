@@ -31,6 +31,7 @@ import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/metadata/roles.decorator';
 import { LoggingInterceptor } from '../common/interceptors/logging.interceptor';
 import { TransformInterceptor } from '../common/interceptors/transform.interceptor';
+import { User } from '../common/decorators/requests/user.decorator';
 
 @Controller('events')
 @UseFilters(HttpExceptionFilter)
@@ -52,23 +53,25 @@ export class EventsController {
     return await this.eventsService.findAll();
   }
 
-  @Post()
-  @Roles('admin')
-  create(@Body() createEventDto: CreateEventDto): void {
-    //throw new ForbiddenException();
-    this.eventsService.create(createEventDto);
-  }
+  // @Post()
+  // @Roles('admin')
+  // create(@Body() createEventDto: CreateEventDto): void {
+  //   //throw new ForbiddenException();
+  //   this.eventsService.create({ ...createEventDto, isActive: true });
+  // }
 
-  @Get(':id')
-  async findOne(
-    @Param(
-      'id',
-      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
-    )
-    id: number,
-  ): Promise<Event> {
-    return await this.eventsService.findOne(id);
-  }
+  // @Get(':id')
+  // async findOne(
+  //   @Param(
+  //     'id',
+  //     new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+  //   )
+  //   id: number,
+  //   @User() user: any,
+  // ): Promise<Event> {
+  //   console.log(user);
+  //   return await this.eventsService.findOne(id);
+  // }
 
   // @Patch(':id')
   // update(

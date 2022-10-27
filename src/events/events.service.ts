@@ -1,19 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { Event } from './interfaces/event.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Event } from './entities/event.entity';
+//import { Event } from './interfaces/event.interface';
 
 @Injectable()
 export class EventsService {
-  private readonly events: Event[] = [];
+  constructor(
+    @InjectRepository(Event)
+    private eventsRepository: Repository<Event>,
+  ) {}
 
-  create(event: Event) {
-    this.events.push(event);
+  findAll(): Promise<Event[]> {
+    return this.eventsRepository.find();
   }
 
-  async findAll(): Promise<Event[]> {
-    return this.events;
+  // create(event: Event) {
+  //   this.events.push(event);
+  // }
+
+  findOne(id: number): Promise<Event> {
+    return this.eventsRepository.findOneBy({ id });
   }
 
-  async findOne(id: number): Promise<Event> {
-    return this.events.find((event) => (event.id = id));
+  async remove(id: string): Promise<void> {
+    await this.eventsRepository.delete(id);
   }
 }
