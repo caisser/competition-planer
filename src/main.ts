@@ -4,14 +4,21 @@ import { ExcludeNullInterceptor } from './common/interceptors/exclude-null.inter
 // import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 import { logger } from './common/middleware/logger.middleware';
 import { ValidationPipe } from './common/pipes/validation.pipe';
+import { AppConfigService } from './config/app/config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Get app config for cors settings and starting the app.
+  const appConfig: AppConfigService = app.get(AppConfigService);
+
   app.use(logger);
   // app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new ExcludeNullInterceptor());
   app.useGlobalPipes(new ValidationPipe());
-  const port = 3000;
+
+  const port = appConfig.port;
+
   await app.listen(port, () => {
     console.log(`App runing on http://localhost:${port}`);
   });
