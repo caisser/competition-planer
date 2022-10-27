@@ -25,13 +25,13 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { EventsService } from './events.service';
 import { Event } from './interfaces/event.interface';
 // import { ForbiddenException } from '../common/exceptions/forbidden.exception';
-import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
-import { ValidationPipe } from '../common/pipes/validation.pipe';
-import { RolesGuard } from '../common/guards/roles.guard';
-import { Roles } from '../common/decorators/metadata/roles.decorator';
-import { LoggingInterceptor } from '../common/interceptors/logging.interceptor';
-import { TransformInterceptor } from '../common/interceptors/transform.interceptor';
-import { User } from '../common/decorators/requests/user.decorator';
+import { HttpExceptionFilter } from '../../common/exceptions/http-exception.filter';
+import { ValidationPipe } from '../../common/pipes/validation.pipe';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { Roles } from '../../common/decorators/metadata/roles.decorator';
+import { LoggingInterceptor } from '../../common/interceptors/logging.interceptor';
+import { TransformInterceptor } from '../../common/interceptors/transform.interceptor';
+import { User } from '../../common/decorators/requests/user.decorator';
 
 @Controller('events')
 @UseFilters(HttpExceptionFilter)

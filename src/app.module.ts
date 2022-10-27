@@ -2,9 +2,9 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { EventsModule } from './events/events.module';
+import { EventsModule } from './models/events/events.module';
 import { PostgresDatabaseProviderModule } from './providers/db/postgres/provider.module';
-import { EventsController } from './events/events.controller';
+import { EventsController } from './models/events/events.controller';
 import { AppConfigModule } from './config/app/config.module';
 import helmet from 'helmet';
 

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Event } from '../../../events/entities/event.entity';
+import { Event } from '../../../models/events/entities/event.entity';
 import { PostgresConfigModule } from '../../../config/db/postgres/config.module';
 import { PostgresConfigService } from '../../../config/db/postgres/config.service';
 
