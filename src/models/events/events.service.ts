@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Event } from './entities/event.entity';
-//import { Event } from './interfaces/event.interface';
+import { IEvent } from './interfaces/event.interface';
 
 @Injectable()
 export class EventsService {

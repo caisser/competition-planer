@@ -1,55 +1,28 @@
 import {
   Controller,
   Get,
-  Post,
+  ParseBoolPipe,
+  Query,
+  // Post,
   // Patch,
   // Delete,
-  // HttpCode,
-  // Header,
-  Param,
-  Body,
-  // HttpException,
-  HttpStatus,
-  UseFilters,
-  ParseIntPipe,
-  Query,
-  DefaultValuePipe,
-  ParseBoolPipe,
-  UseGuards,
-  SetMetadata,
-  UseInterceptors,
 } from '@nestjs/common';
-
-import { CreateEventDto } from './dto/create-event.dto';
-// import { UpdateEventDto } from './dto/update-event.dto';
+import { Logger } from '@nestjs/common';
 import { EventsService } from './events.service';
-import { Event } from './interfaces/event.interface';
-// import { ForbiddenException } from '../common/exceptions/forbidden.exception';
-import { HttpExceptionFilter } from '../../common/exceptions/http-exception.filter';
-import { ValidationPipe } from '../../common/pipes/validation.pipe';
-import { RolesGuard } from '../../common/guards/roles.guard';
-import { Roles } from '../../common/decorators/metadata/roles.decorator';
-import { LoggingInterceptor } from '../../common/interceptors/logging.interceptor';
-import { TransformInterceptor } from '../../common/interceptors/transform.interceptor';
-import { User } from '../../common/decorators/requests/user.decorator';
+import { Event } from './entities/event.entity';
 
 @Controller('events')
-@UseFilters(HttpExceptionFilter)
-@UseGuards(RolesGuard)
-@UseInterceptors(LoggingInterceptor)
 export class EventsController {
-  constructor(private readonly eventsService: EventsService) {}
+  constructor(
+    private readonly eventsService: EventsService,
+    private readonly logger: Logger,
+  ) {}
 
   @Get()
-  @UseInterceptors(TransformInterceptor)
   async findAll(
-    @Query('activeOnly', new DefaultValuePipe(false), ParseBoolPipe)
-    activeOnly: boolean,
-    @Query('page', new DefaultValuePipe(0), ParseIntPipe)
-    page: number,
+    @Query('isActive', ParseBoolPipe) isActive: boolean,
   ): Promise<Event[]> {
-    //throw new ForbiddenException();
-    console.log('This action returns all events');
+    this.logger.verbose('Returning all the events');
     return await this.eventsService.findAll();
   }
 
