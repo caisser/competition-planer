@@ -16,7 +16,7 @@ import { PostgresConfigService } from '../../../config/db/postgres/config.servic
         password: postgresConfigService.password,
         database: postgresConfigService.database,
         entities: [Event],
-        synchronize: true,
+        // synchronize: true,
       }),
       inject: [PostgresConfigService],
     }),

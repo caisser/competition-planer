@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 import { IEvent } from '../interfaces/event.interface';
 
 @Entity({
@@ -9,6 +9,7 @@ export class Event implements IEvent {
   id: number;
 
   @Column()
+  @Index({ unique: true })
   name: string;
 
   @Column()
