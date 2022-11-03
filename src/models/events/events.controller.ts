@@ -25,11 +25,9 @@ export class EventsController {
   ) {}
 
   @Get()
-  async findAll(
-    @Query('isActive', ParseBoolPipe) isActive: boolean,
-  ): Promise<Event[]> {
+  async findAll(): Promise<Event[]> {
     this.logger.verbose('Returning all the events');
-    return await this.eventsService.findAll(isActive);
+    return await this.eventsService.findAll();
   }
 
   @Post()
@@ -39,13 +37,10 @@ export class EventsController {
 
   @Get(':id')
   async findOne(
-    @Param(
-      'id',
-      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
-    )
+    @Param('id', ParseIntPipe)
     id: number,
   ): Promise<Event> {
-    return await this.eventsService.findOne(id);
+    return await this.eventsService.findOneById(id);
   }
 
   @Patch(':id')
@@ -57,11 +52,11 @@ export class EventsController {
   }
 
   @Delete(':id')
-  delete(
+  async delete(
     @Param('id', ParseIntPipe)
     id: number,
-  ): string {
-    this.eventsService.remove(id);
+  ): Promise<string> {
+    await this.eventsService.remove(id);
     return `Event with id ${id} deleted`;
   }
 }
