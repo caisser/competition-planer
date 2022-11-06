@@ -1,12 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Event } from './entities/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { EntityNotFoundException } from '../../common/exceptions/not-found.exception';
 
 @Injectable()
 export class EventsService {
+  private entityName = 'Event';
+
   constructor(
     @InjectRepository(Event)
     private eventsRepository: Repository<Event>,
@@ -17,7 +20,7 @@ export class EventsService {
   }
 
   async create(event: CreateEventDto): Promise<Event> {
-    const newEvent = await this.eventsRepository.create(event);
+    const newEvent = this.eventsRepository.create(event);
     await this.eventsRepository.save(newEvent);
     return newEvent;
   }
@@ -26,7 +29,7 @@ export class EventsService {
     const event = await this.eventsRepository.findOneBy({ id });
     if (event) return event;
 
-    throw new NotFoundException(`Event with id ${id} does not exist`);
+    throw new EntityNotFoundException(id, this.entityName);
   }
 
   async update(id: number, updateEventDto: UpdateEventDto): Promise<Event> {
@@ -34,12 +37,12 @@ export class EventsService {
     const updatedEvent = await this.eventsRepository.findOneBy({ id });
     if (updatedEvent) return updatedEvent;
 
-    throw new NotFoundException(`Event with id ${id} does not exist`);
+    throw new EntityNotFoundException(id, this.entityName);
   }
 
   async remove(id: number): Promise<void> {
     const deleteResponse = await this.eventsRepository.delete(id);
     if (!deleteResponse.affected)
-      throw new NotFoundException(`Event with id ${id} does not exist`);
+      throw new EntityNotFoundException(id, this.entityName);
   }
 }
