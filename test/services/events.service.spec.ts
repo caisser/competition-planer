@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { plainToClass } from 'class-transformer';
+import { UpdateEventDto } from '../../src/models/events/dto/update-event.dto';
 import { DeleteResult } from 'typeorm';
 import { Event } from '../../src/models/events/entities/event.entity';
 import { EventsService } from '../../src/models/events/events.service';
@@ -11,6 +11,7 @@ describe('EventsService', () => {
     find: jest.fn(),
     findOneBy: jest.fn(),
     delete: jest.fn(),
+    update: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -115,6 +116,56 @@ describe('EventsService', () => {
         await expect(eventsService.remove(1)).rejects.toThrow();
         expect(deleteSpy).toBeCalledTimes(1);
         expect(deleteSpy).toBeCalledWith(1);
+      });
+    });
+  });
+
+  //TODO: Finish this test
+  describe('update Method', () => {
+    describe('Event is mached', () => {
+      let updateEventDto: UpdateEventDto;
+      let event: Event;
+
+      beforeEach(() => {
+        event = new Event();
+        updateEventDto = new UpdateEventDto();
+        mockedRepo.update.mockReturnValue(Promise.resolve());
+        mockedRepo.findOneBy.mockReturnValue(Promise.resolve(event));
+      });
+
+      it('Should return a Event', async () => {
+        const updateSpy = jest.spyOn(mockedRepo, 'update');
+        const findOneBySpy = jest.spyOn(mockedRepo, 'findOneBy');
+
+        const updatedEvent = await eventsService.update(1, updateEventDto);
+
+        expect(updatedEvent).toEqual(event);
+
+        expect(findOneBySpy).toBeCalledTimes(1);
+        expect(updateSpy).toBeCalledTimes(1);
+        expect(findOneBySpy).toBeCalledWith({ id: 1 });
+        expect(updateSpy).toBeCalledWith(1, updateEventDto);
+      });
+    });
+
+    describe('Event is not matched', () => {
+      let updateEventDto: UpdateEventDto;
+
+      beforeEach(() => {
+        updateEventDto = new UpdateEventDto();
+        mockedRepo.update.mockReturnValue(Promise.resolve());
+        mockedRepo.findOneBy.mockReturnValue(undefined);
+      });
+      it('should throw an error', async () => {
+        const updateSpy = jest.spyOn(mockedRepo, 'update');
+        const findOneBySpy = jest.spyOn(mockedRepo, 'findOneBy');
+
+        await expect(eventsService.update(1, updateEventDto)).rejects.toThrow();
+
+        expect(findOneBySpy).toBeCalledTimes(1);
+        expect(updateSpy).toBeCalledTimes(1);
+        expect(findOneBySpy).toBeCalledWith({ id: 1 });
+        expect(updateSpy).toBeCalledWith(1, updateEventDto);
       });
     });
   });
