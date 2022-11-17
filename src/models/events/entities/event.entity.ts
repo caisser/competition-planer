@@ -5,8 +5,8 @@ import { IEvent } from '../interfaces/event.interface';
   name: 'events',
 })
 export class Event implements IEvent {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   @Index({ unique: true })

@@ -25,14 +25,14 @@ export class EventsService {
     return newEvent;
   }
 
-  async findOneById(id: number): Promise<Event> {
+  async findOneById(id: string): Promise<Event> {
     const event = await this.eventsRepository.findOneBy({ id });
     if (event) return event;
 
     throw new EntityNotFoundException(id, this.entityName);
   }
 
-  async update(id: number, updateEventDto: UpdateEventDto): Promise<Event> {
+  async update(id: string, updateEventDto: UpdateEventDto): Promise<Event> {
     await this.eventsRepository.update(id, updateEventDto);
     const updatedEvent = await this.eventsRepository.findOneBy({ id });
     if (updatedEvent) return updatedEvent;
@@ -40,7 +40,7 @@ export class EventsService {
     throw new EntityNotFoundException(id, this.entityName);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const deleteResponse = await this.eventsRepository.delete(id);
     if (!deleteResponse.affected)
       throw new EntityNotFoundException(id, this.entityName);

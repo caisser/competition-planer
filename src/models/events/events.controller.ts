@@ -1,15 +1,13 @@
 import {
   Controller,
   Get,
-  HttpStatus,
   Param,
-  ParseBoolPipe,
   ParseIntPipe,
-  Query,
   Post,
   Body,
   Patch,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { EventsService } from './events.service';
@@ -37,15 +35,15 @@ export class EventsController {
 
   @Get(':id')
   async findOne(
-    @Param('id', ParseIntPipe)
-    id: number,
+    @Param('id', ParseUUIDPipe)
+    id: string,
   ): Promise<Event> {
     return await this.eventsService.findOneById(id);
   }
 
   @Patch(':id')
   async update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() event: UpdateEventDto,
   ): Promise<Event> {
     return await this.eventsService.update(id, event);
@@ -53,8 +51,8 @@ export class EventsController {
 
   @Delete(':id')
   async delete(
-    @Param('id', ParseIntPipe)
-    id: number,
+    @Param('id', ParseUUIDPipe)
+    id: string,
   ): Promise<string> {
     await this.eventsService.remove(id);
     return `Event with id ${id} deleted`;

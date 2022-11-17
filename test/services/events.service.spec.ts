@@ -120,7 +120,6 @@ describe('EventsService', () => {
     });
   });
 
-  //TODO: Finish this test
   describe('update Method', () => {
     describe('Event is mached', () => {
       let updateEventDto: UpdateEventDto;
