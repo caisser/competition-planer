@@ -1,4 +1,6 @@
 'use strict';
+import config from './config/newrelic/newrelic.config';
+
 /**
  * New Relic agent configuration.
  *
@@ -9,11 +11,11 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['competition-planer'],
+  app_name: [config.appName],
   /**
    * Your New Relic license key. 5bad402c6607839dd06a9d3e481fb22068c7NRAL
    */
-  license_key: 'b56f84e6a07c115dbe9a35f62f4b6b7cFFFFNRAL',
+  license_key: config.licenseKey,
   /**
    * This setting controls distributed tracing.
    * Distributed tracing lets you see the path that a request takes through your
