@@ -1,3 +1,4 @@
+import newrelic from 'newrelic';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ExcludeNullInterceptor } from './common/interceptors/exclude-null.interceptor';
