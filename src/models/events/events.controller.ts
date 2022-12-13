@@ -8,7 +8,6 @@ import {
   Delete,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { Logger } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { Event } from './entities/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -16,14 +15,10 @@ import { UpdateEventDto } from './dto/update-event.dto';
 
 @Controller('events')
 export class EventsController {
-  constructor(
-    private readonly eventsService: EventsService,
-    private readonly logger: Logger,
-  ) {}
+  constructor(private readonly eventsService: EventsService) {}
 
   @Get()
   async findAll(): Promise<Event[]> {
-    this.logger.verbose('Returning all the events');
     return await this.eventsService.findAll();
   }
 

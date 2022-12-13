@@ -4,9 +4,17 @@ import { EventsModule } from './models/events/events.module';
 import { PostgresDatabaseProviderModule } from './providers/db/postgres/provider.module';
 import { AppConfigModule } from './config/app/config.module';
 import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
+import { AuthenticationModule } from './auth/authentication.module';
+import { UsersModule } from './models/users/users.module';
 
 @Module({
-  imports: [AppConfigModule, PostgresDatabaseProviderModule, EventsModule],
+  imports: [
+    AppConfigModule,
+    PostgresDatabaseProviderModule,
+    EventsModule,
+    UsersModule,
+    AuthenticationModule,
+  ],
   controllers: [],
   providers: [
     {

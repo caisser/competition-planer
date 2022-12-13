@@ -6,15 +6,13 @@ import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  private entityName = 'User';
-
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) {}
 
   async getByEmail(email: string) {
-    const user = await this.usersRepository.findBy({ email });
+    const user = await this.usersRepository.findOneBy({ email });
     if (user) return user;
 
     throw new HttpException(
