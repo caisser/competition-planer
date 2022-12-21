@@ -7,11 +7,13 @@ import {
   Patch,
   Delete,
   ParseUUIDPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { Event } from './entities/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import JwtAuthenticationGuard from '../../common/guards/jwtAuthentication.guard';
 
 @Controller('events')
 export class EventsController {
@@ -23,6 +25,7 @@ export class EventsController {
   }
 
   @Post()
+  @UseGuards(JwtAuthenticationGuard)
   async create(@Body() event: CreateEventDto): Promise<Event> {
     return await this.eventsService.create(event);
   }

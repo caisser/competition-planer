@@ -8,4 +8,12 @@ export class AppConfigService {
   get port(): number {
     return Number(this.configService.get<number>('app.port'));
   }
+
+  get jwtSecret(): string {
+    return String(this.configService.get<string>('app.jwtSecret'));
+  }
+
+  get jwtExpirationTime(): string {
+    return String(this.configService.get<string>('app.jwtExpirationTime'));
+  }
 }

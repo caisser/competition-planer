@@ -9,6 +9,7 @@ import { User } from '../../../models/users/entities/user.entity';
   imports: [
     TypeOrmModule.forRootAsync({
       imports: [PostgresConfigModule],
+      inject: [PostgresConfigService],
       useFactory: async (postgresConfigService: PostgresConfigService) => ({
         type: 'postgres',
         host: postgresConfigService.host,
@@ -19,7 +20,6 @@ import { User } from '../../../models/users/entities/user.entity';
         entities: [Event, User],
         synchronize: false,
       }),
-      inject: [PostgresConfigService],
     }),
   ],
 })
