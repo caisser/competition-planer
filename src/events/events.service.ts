@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Event } from './entities/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { EntityNotFoundException } from '../../common/exceptions/not-found.exception';
+import { EntityNotFoundException } from '../common/exceptions/not-found.exception';
 
 @Injectable()
 export class EventsService {

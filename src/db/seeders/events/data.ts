@@ -1,4 +1,4 @@
-import { IEvent } from '../../../models/events/interfaces/event.interface';
+import { IEvent } from '../../../events/interfaces/event.interface';
 export const events: IEvent[] = [
   {
     name: 'Revolution Games 2023',
