@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Event } from '../../../events/entities/event.entity';
 import { PostgresConfigModule } from '../../../config/db/postgres/config.module';
 import { PostgresConfigService } from '../../../config/db/postgres/config.service';
-import { User } from '../../../users/entities/user.entity';
 
 @Module({
   imports: [
@@ -17,8 +15,8 @@ import { User } from '../../../users/entities/user.entity';
         username: postgresConfigService.username,
         password: postgresConfigService.password,
         database: postgresConfigService.database,
-        entities: [Event, User],
         synchronize: false,
+        autoLoadEntities: true,
       }),
     }),
   ],
