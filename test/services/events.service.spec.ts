@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { UpdateEventDto } from '../../src/models/events/dto/update-event.dto';
+import { UpdateEventDto } from '../../src/events/dto/update-event.dto';
 import { DeleteResult } from 'typeorm';
-import { Event } from '../../src/models/events/entities/event.entity';
-import { EventsService } from '../../src/models/events/events.service';
+import { Event } from '../../src/events/entities/event.entity';
+import { EventsService } from '../../src/events/events.service';
 
 describe('EventsService', () => {
   let eventsService: EventsService;

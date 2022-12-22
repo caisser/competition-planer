@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
+import { UserRole } from '../emun/userRole.enum';
 import { IUser } from '../interfaces/user.interface';
 
 @Entity({
@@ -17,6 +18,12 @@ export class User implements IUser {
 
   @Column()
   password: string;
+
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+  })
+  role: UserRole;
 
   @Column({ default: true })
   isActive: boolean;

@@ -13,7 +13,7 @@ import { EventsService } from './events.service';
 import { Event } from './entities/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import JwtAuthenticationGuard from '../../common/guards/jwtAuthentication.guard';
+import JwtAuthenticationGuard from '../common/guards/jwtAuthentication.guard';
 
 @Controller('events')
 export class EventsController {
