@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
+import { Exclude } from 'class-transformer';
 import { UserRole } from '../emun/userRole.enum';
 import { IUser } from '../interfaces/user.interface';
 
@@ -17,6 +18,7 @@ export class User implements IUser {
   name: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column({
@@ -32,11 +34,11 @@ export class User implements IUser {
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  createdAt: string;
+  createdAt: Date;
 
   @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  updatedAt: string;
+  updatedAt: Date;
 }

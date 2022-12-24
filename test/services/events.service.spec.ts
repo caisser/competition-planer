@@ -59,12 +59,16 @@ describe('EventsService', () => {
 
       it('Should return a Event', async () => {
         const findOneBySpy = jest.spyOn(mockedRepo, 'findOneBy');
-        const fetchedEvent = await eventsService.findOneById(1);
+        const fetchedEvent = await eventsService.findOneById(
+          'baee64d0-af31-4062-9f43-3511c6f6b460',
+        );
 
         expect(fetchedEvent).toEqual(event);
 
         expect(findOneBySpy).toBeCalledTimes(1);
-        expect(findOneBySpy).toBeCalledWith({ id: 1 });
+        expect(findOneBySpy).toBeCalledWith({
+          id: 'baee64d0-af31-4062-9f43-3511c6f6b460',
+        });
       });
     });
 
@@ -75,9 +79,13 @@ describe('EventsService', () => {
       it('should throw an error', async () => {
         const findOneBySpy = jest.spyOn(mockedRepo, 'findOneBy');
 
-        await expect(eventsService.findOneById(2)).rejects.toThrow();
+        await expect(
+          eventsService.findOneById('baee64d0-af31-4062-9f43-3511c6f6b460'),
+        ).rejects.toThrow();
         expect(findOneBySpy).toBeCalledTimes(1);
-        expect(findOneBySpy).toBeCalledWith({ id: 2 });
+        expect(findOneBySpy).toBeCalledWith({
+          id: 'baee64d0-af31-4062-9f43-3511c6f6b460',
+        });
       });
     });
   });
@@ -95,10 +103,13 @@ describe('EventsService', () => {
       it('Should return void', async () => {
         const deleteSpy = jest.spyOn(mockedRepo, 'delete');
 
-        expect(eventsService.remove(1)).resolves;
+        expect(eventsService.remove('baee64d0-af31-4062-9f43-3511c6f6b460'))
+          .resolves;
 
         expect(deleteSpy).toBeCalledTimes(1);
-        expect(deleteSpy).toBeCalledWith(1);
+        expect(deleteSpy).toBeCalledWith(
+          'baee64d0-af31-4062-9f43-3511c6f6b460',
+        );
       });
     });
 
@@ -113,9 +124,13 @@ describe('EventsService', () => {
       it('should throw an error', async () => {
         const deleteSpy = jest.spyOn(mockedRepo, 'delete');
 
-        await expect(eventsService.remove(1)).rejects.toThrow();
+        await expect(
+          eventsService.remove('baee64d0-af31-4062-9f43-3511c6f6b460'),
+        ).rejects.toThrow();
         expect(deleteSpy).toBeCalledTimes(1);
-        expect(deleteSpy).toBeCalledWith(1);
+        expect(deleteSpy).toBeCalledWith(
+          'baee64d0-af31-4062-9f43-3511c6f6b460',
+        );
       });
     });
   });
@@ -136,14 +151,22 @@ describe('EventsService', () => {
         const updateSpy = jest.spyOn(mockedRepo, 'update');
         const findOneBySpy = jest.spyOn(mockedRepo, 'findOneBy');
 
-        const updatedEvent = await eventsService.update(1, updateEventDto);
+        const updatedEvent = await eventsService.update(
+          'baee64d0-af31-4062-9f43-3511c6f6b460',
+          updateEventDto,
+        );
 
         expect(updatedEvent).toEqual(event);
 
         expect(findOneBySpy).toBeCalledTimes(1);
         expect(updateSpy).toBeCalledTimes(1);
-        expect(findOneBySpy).toBeCalledWith({ id: 1 });
-        expect(updateSpy).toBeCalledWith(1, updateEventDto);
+        expect(findOneBySpy).toBeCalledWith({
+          id: 'baee64d0-af31-4062-9f43-3511c6f6b460',
+        });
+        expect(updateSpy).toBeCalledWith(
+          'baee64d0-af31-4062-9f43-3511c6f6b460',
+          updateEventDto,
+        );
       });
     });
 
@@ -159,12 +182,22 @@ describe('EventsService', () => {
         const updateSpy = jest.spyOn(mockedRepo, 'update');
         const findOneBySpy = jest.spyOn(mockedRepo, 'findOneBy');
 
-        await expect(eventsService.update(1, updateEventDto)).rejects.toThrow();
+        await expect(
+          eventsService.update(
+            'baee64d0-af31-4062-9f43-3511c6f6b460',
+            updateEventDto,
+          ),
+        ).rejects.toThrow();
 
         expect(findOneBySpy).toBeCalledTimes(1);
         expect(updateSpy).toBeCalledTimes(1);
-        expect(findOneBySpy).toBeCalledWith({ id: 1 });
-        expect(updateSpy).toBeCalledWith(1, updateEventDto);
+        expect(findOneBySpy).toBeCalledWith({
+          id: 'baee64d0-af31-4062-9f43-3511c6f6b460',
+        });
+        expect(updateSpy).toBeCalledWith(
+          'baee64d0-af31-4062-9f43-3511c6f6b460',
+          updateEventDto,
+        );
       });
     });
   });

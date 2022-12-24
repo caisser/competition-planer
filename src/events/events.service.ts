@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Event } from './entities/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { EntityNotFoundException } from '../common/exceptions/not-found.exception';
+import PostgresErrorCode from '../db/postgresErrorCode.enum';
 
 @Injectable()
 export class EventsService {
@@ -20,9 +21,20 @@ export class EventsService {
   }
 
   async create(event: CreateEventDto): Promise<Event> {
-    const newEvent = this.eventsRepository.create(event);
-    await this.eventsRepository.save(newEvent);
-    return newEvent;
+    try {
+      const newEvent = this.eventsRepository.create(event);
+      await this.eventsRepository.save(newEvent);
+      return newEvent;
+    } catch (error) {
+      if (error?.code === PostgresErrorCode.UniqueViolation) {
+        throw new HttpException(error?.detail, HttpStatus.BAD_REQUEST);
+      }
+      console.log(error);
+      throw new HttpException(
+        'Something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async findOneById(id: string): Promise<Event> {
