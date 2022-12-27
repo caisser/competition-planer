@@ -1,7 +1,6 @@
 import {
   Body,
   Req,
-  Res,
   Controller,
   HttpCode,
   Post,

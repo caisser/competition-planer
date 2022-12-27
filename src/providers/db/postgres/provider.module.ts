@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConfigModule } from '../../../config/db/postgres/config.module';
 import { PostgresConfigService } from '../../../config/db/postgres/config.service';
+import { Address } from '../../../adresses/entities/adress.entity';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PostgresConfigService } from '../../../config/db/postgres/config.servic
         database: postgresConfigService.database,
         synchronize: false,
         autoLoadEntities: true,
+        entities: [Address],
       }),
     }),
   ],

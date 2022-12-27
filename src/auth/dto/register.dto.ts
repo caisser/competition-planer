@@ -1,5 +1,12 @@
-import { IsEmail, IsString, IsNotEmpty, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  IsNotEmpty,
+  MinLength,
+  IsObject,
+} from 'class-validator';
 import { UserRole } from '../../users/emun/userRole.enum';
+import { Address } from '../../adresses/entities/adress.entity';
 
 export class RegisterDto {
   @IsEmail()
@@ -18,4 +25,8 @@ export class RegisterDto {
   @IsString()
   @IsNotEmpty()
   role: UserRole;
+
+  @IsObject()
+  @IsNotEmpty()
+  address: Address;
 }

@@ -1,7 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  Index,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { UserRole } from '../emun/userRole.enum';
 import { IUser } from '../interfaces/user.interface';
+import { Address } from '../../adresses/entities/adress.entity';
 
 @Entity({
   name: 'users',
@@ -41,4 +49,8 @@ export class User implements IUser {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
+
+  @OneToOne(() => Address, { eager: true, cascade: true })
+  @JoinColumn()
+  address: Address;
 }
