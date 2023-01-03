@@ -7,6 +7,9 @@ import {
   Patch,
   Delete,
   ParseUUIDPipe,
+  Req,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { Event } from './entities/event.entity';
@@ -14,8 +17,10 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Auth } from '../common/decorators/auth/auth.decorator';
 import { UserRole } from '../users/emun/userRole.enum';
+import RequestWithUser from '../auth/interfaces/requestWithUser.interface';
 
 @Controller('events')
+@UseInterceptors(ClassSerializerInterceptor)
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
@@ -26,8 +31,12 @@ export class EventsController {
 
   @Post()
   @Auth(UserRole.ADMIN, UserRole.EVENT_MANAGER)
-  async create(@Body() event: CreateEventDto): Promise<Event> {
-    return await this.eventsService.create(event);
+  async create(
+    @Body() event: CreateEventDto,
+    @Req() req: RequestWithUser,
+  ): Promise<Event> {
+    const { user } = req;
+    return await this.eventsService.create(event, user);
   }
 
   @Get(':id')

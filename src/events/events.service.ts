@@ -6,6 +6,7 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { EntityNotFoundException } from '../common/exceptions/not-found.exception';
 import PostgresErrorCode from '../db/postgresErrorCode.enum';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class EventsService {
@@ -20,9 +21,12 @@ export class EventsService {
     return this.eventsRepository.find();
   }
 
-  async create(event: CreateEventDto): Promise<Event> {
+  async create(event: CreateEventDto, user: User): Promise<Event> {
     try {
-      const newEvent = this.eventsRepository.create(event);
+      const newEvent = this.eventsRepository.create({
+        ...event,
+        createdBy: user,
+      });
       await this.eventsRepository.save(newEvent);
       return newEvent;
     } catch (error) {

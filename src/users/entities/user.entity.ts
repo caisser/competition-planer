@@ -5,11 +5,13 @@ import {
   Index,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { UserRole } from '../emun/userRole.enum';
 import { IUser } from '../interfaces/user.interface';
 import { Address } from '../../adresses/entities/adress.entity';
+import { Event } from '../../events/entities/event.entity';
 
 @Entity({
   name: 'users',
@@ -53,4 +55,7 @@ export class User implements IUser {
   @OneToOne(() => Address, { eager: true, cascade: true })
   @JoinColumn()
   address: Address;
+
+  @OneToMany(() => Event, (event: Event) => event.createdBy)
+  eventsCreated: Event[];
 }

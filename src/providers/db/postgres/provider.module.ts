@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConfigModule } from '../../../config/db/postgres/config.module';
 import { PostgresConfigService } from '../../../config/db/postgres/config.service';
 import { Address } from '../../../adresses/entities/adress.entity';
+import { Category } from '../../../categories/entities/category.entity';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { Address } from '../../../adresses/entities/adress.entity';
         database: postgresConfigService.database,
         synchronize: false,
         autoLoadEntities: true,
-        entities: [Address],
+        entities: [Address, Category],
       }),
     }),
   ],
