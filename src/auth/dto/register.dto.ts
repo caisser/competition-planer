@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   MinLength,
   IsObject,
+  IsOptional,
 } from 'class-validator';
 import { UserRole } from '../../users/emun/userRole.enum';
 import { Address } from '../../adresses/entities/adress.entity';
@@ -27,6 +28,6 @@ export class RegisterDto {
   role: UserRole;
 
   @IsObject()
-  @IsNotEmpty()
+  @IsOptional()
   address: Address;
 }

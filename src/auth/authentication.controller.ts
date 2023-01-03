@@ -45,8 +45,8 @@ export class AuthenticationController {
     );
   }
 
-  @UseGuards(JwtAuthenticationGuard)
   @Get()
+  @UseGuards(JwtAuthenticationGuard)
   authenticate(@Req() request: RequestWithUser) {
     const user = request.user;
     return user;
