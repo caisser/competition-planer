@@ -5,7 +5,6 @@ import {
   Index,
   JoinTable,
   ManyToMany,
-  JoinColumn,
   ManyToOne,
 } from 'typeorm';
 import { IEvent } from '../interfaces/event.interface';

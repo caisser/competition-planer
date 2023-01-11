@@ -25,6 +25,7 @@ export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
   @Get()
+  @Auth()
   async findAll(): Promise<Event[]> {
     return await this.eventsService.findAll();
   }
