@@ -6,6 +6,7 @@ import {
   OneToOne,
   JoinColumn,
   OneToMany,
+  ManyToMany,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { UserRole } from '../emun/userRole.enum';
@@ -58,4 +59,7 @@ export class User implements IUser {
 
   @OneToMany(() => Event, (event: Event) => event.createdBy)
   eventsCreated: Event[];
+
+  @ManyToMany(() => Event, (event: Event) => event.athletes)
+  eventsAsAthlete: Event[];
 }

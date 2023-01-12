@@ -13,7 +13,7 @@ async function bootstrap() {
   // Get app config settings and starting the app.
   const appConfig: AppConfigService = app.get(AppConfigService);
   app.useGlobalPipes(new ValidationPipe());
-  // app.useGlobalInterceptors(new ExcludeNullInterceptor());
+  app.useGlobalInterceptors(new ExcludeNullInterceptor());
   app.use(cookieParser(), helmet());
 
   const port = appConfig.port;

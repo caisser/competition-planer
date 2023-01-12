@@ -10,6 +10,7 @@ import {
   Req,
   UseInterceptors,
   ClassSerializerInterceptor,
+  HttpCode,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { Event } from './entities/event.entity';
@@ -25,7 +26,6 @@ export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
   @Get()
-  @Auth()
   async findAll(): Promise<Event[]> {
     return await this.eventsService.findAll();
   }
@@ -49,6 +49,7 @@ export class EventsController {
   }
 
   @Patch(':id')
+  @Auth(UserRole.ADMIN, UserRole.EVENT_MANAGER)
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() event: UpdateEventDto,
@@ -57,11 +58,24 @@ export class EventsController {
   }
 
   @Delete(':id')
+  @Auth(UserRole.ADMIN, UserRole.EVENT_MANAGER)
   async delete(
     @Param('id', ParseUUIDPipe)
     id: string,
   ): Promise<string> {
     await this.eventsService.remove(id);
     return `Event with id ${id} deleted`;
+  }
+
+  @Post(':id/register')
+  @HttpCode(200)
+  @Auth(UserRole.ATHLETE)
+  async register(
+    @Param('id', ParseUUIDPipe)
+    id: string,
+    @Req() req: RequestWithUser,
+  ) {
+    const { user } = req;
+    await this.eventsService.registerAthlete(id, user);
   }
 }

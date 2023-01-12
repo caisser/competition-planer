@@ -49,4 +49,11 @@ export class Event implements IEvent {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updatedAt: string;
+
+  @JoinTable()
+  @ManyToMany(() => User, (user: User) => user.eventsAsAthlete, {
+    eager: true,
+    cascade: true,
+  })
+  athletes: User[];
 }

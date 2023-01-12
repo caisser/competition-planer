@@ -56,6 +56,16 @@ export class EventsService {
     throw new EntityNotFoundException(id, this.entityName);
   }
 
+  async registerAthlete(id: string, user: User) {
+    const event = await this.eventsRepository.findOneBy({ id });
+    if (!event) throw new EntityNotFoundException(id, this.entityName);
+
+    event.athletes.push(user);
+    await this.eventsRepository.save(event);
+
+    return;
+  }
+
   async remove(id: string): Promise<void> {
     const deleteResponse = await this.eventsRepository.delete(id);
     if (!deleteResponse.affected)
