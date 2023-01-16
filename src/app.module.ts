@@ -6,6 +6,7 @@ import { AppConfigModule } from './config/app/config.module';
 import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 import { AuthenticationModule } from './auth/authentication.module';
 import { UsersModule } from './users/users.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UsersModule } from './users/users.module';
     EventsModule,
     UsersModule,
     AuthenticationModule,
+    CategoriesModule,
   ],
   controllers: [],
   providers: [

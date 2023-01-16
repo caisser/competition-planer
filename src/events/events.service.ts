@@ -7,18 +7,17 @@ import { UpdateEventDto } from './dto/update-event.dto';
 import { EntityNotFoundException } from '../common/exceptions/not-found.exception';
 import PostgresErrorCode from '../db/postgresErrorCode.enum';
 import { User } from '../users/entities/user.entity';
+import { SharedService } from '../shared/shared.service';
 
 @Injectable()
-export class EventsService {
+export class EventsService extends SharedService<Event> {
   private entityName = 'Event';
 
   constructor(
     @InjectRepository(Event)
     private eventsRepository: Repository<Event>,
-  ) {}
-
-  findAll(): Promise<Event[]> {
-    return this.eventsRepository.find();
+  ) {
+    super(eventsRepository);
   }
 
   async create(event: CreateEventDto, user: User): Promise<Event> {
