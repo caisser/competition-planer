@@ -12,8 +12,8 @@ import { Category } from './entities/category.entity';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
-  @Get()
-  async findAll(): Promise<Category[]> {
-    return await this.categoriesService.findAll();
-  }
+  // @Get()
+  // async getAll(): Promise<Category[]> {
+  //   // return await this.categoriesService.getAll();
+  // }
 }

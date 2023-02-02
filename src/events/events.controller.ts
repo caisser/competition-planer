@@ -11,6 +11,7 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   HttpCode,
+  Query,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { Event } from './entities/event.entity';
@@ -19,6 +20,7 @@ import { UpdateEventDto } from './dto/update-event.dto';
 import { Auth } from '../common/decorators/auth/auth.decorator';
 import { UserRole } from '../users/emun/userRole.enum';
 import RequestWithUser from '../auth/interfaces/requestWithUser.interface';
+import { QueryParams } from '../utils/types/queryParams';
 
 @Controller('events')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -26,8 +28,8 @@ export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
   @Get()
-  async findAll(): Promise<Event[]> {
-    return await this.eventsService.findAll();
+  async findAll(@Query() options: QueryParams): Promise<Event[]> {
+    return await this.eventsService.findAll(options);
   }
 
   @Post()
