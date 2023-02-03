@@ -53,12 +53,31 @@ export class AuthenticationService {
 
   public getCookieWithJwtToken(userId: string) {
     const payload: TokenPayload = { userId };
-    const token = this.jwtService.sign(payload);
+    const token = this.jwtService.sign(payload, {
+      secret: this.appConfigService.jwtSecret,
+      expiresIn: `${this.appConfigService.jwtExpirationTime}s`,
+    });
     return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.appConfigService.jwtExpirationTime}`;
   }
 
+  public getCookieWithJwtRefreshToken(userId: string) {
+    const payload: TokenPayload = { userId };
+    const token = this.jwtService.sign(payload, {
+      secret: this.appConfigService.jwtRefreshSecret,
+      expiresIn: `${this.appConfigService.jwtRefreshExpirationTime}s`,
+    });
+    const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.appConfigService.jwtRefreshExpirationTime}`;
+    return {
+      cookie,
+      token,
+    };
+  }
+
   public getCookieForLogOut() {
-    return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
+    return [
+      `Authentication=; HttpOnly; Path=/; Max-Age=0`,
+      `Refresh=; HttpOnly; Path=/; Max-Age=0`,
+    ];
   }
 
   private async verifyPassword(

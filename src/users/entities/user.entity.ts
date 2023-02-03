@@ -62,4 +62,10 @@ export class User implements IUser {
 
   @ManyToMany(() => Event, (event: Event) => event.athletes)
   eventsAsAthlete: Event[];
+
+  @Column({
+    nullable: true,
+  })
+  @Exclude()
+  public currentHashedRefreshToken?: string;
 }

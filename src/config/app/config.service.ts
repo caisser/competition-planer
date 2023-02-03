@@ -20,4 +20,14 @@ export class AppConfigService {
   get jwtExpirationTime(): string {
     return String(this.configService.get<string>('app.jwtExpirationTime'));
   }
+
+  get jwtRefreshSecret(): string {
+    return String(this.configService.get<string>('app.jwtRefreshSecret'));
+  }
+
+  get jwtRefreshExpirationTime(): string {
+    return String(
+      this.configService.get<string>('app.jwtRefreshExpirationTime'),
+    );
+  }
 }
