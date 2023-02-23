@@ -28,7 +28,13 @@ export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
   @Get()
-  async findAll(@Query() options: QueryParams): Promise<Event[]> {
+  async findAll(
+    @Query('search') search: string,
+    @Query() options: QueryParams,
+  ): Promise<Event[]> {
+    if (search) {
+      return this.eventsService.searchForEvents(search);
+    }
     return await this.eventsService.findAll(options);
   }
 

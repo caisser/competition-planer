@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, SelectQueryBuilder } from 'typeorm';
+import { Repository, SelectQueryBuilder, In } from 'typeorm';
 import { Event } from './entities/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
@@ -8,6 +8,7 @@ import { EntityNotFoundException } from '../common/exceptions/not-found.exceptio
 import PostgresErrorCode from '../db/postgresErrorCode.enum';
 import { User } from '../users/entities/user.entity';
 import { QueryParams } from '../utils/types/queryParams';
+import EventsSearchService from './eventsSearch.service';
 
 @Injectable()
 export class EventsService {
@@ -16,7 +17,19 @@ export class EventsService {
   constructor(
     @InjectRepository(Event)
     private eventsRepository: Repository<Event>,
+    private eventsSearchService: EventsSearchService,
   ) {}
+
+  async searchForEvents(text: string) {
+    const results = await this.eventsSearchService.search(text);
+    const ids = results.map((result) => result.id);
+    if (!ids.length) {
+      return [];
+    }
+    return this.eventsRepository.find({
+      where: { id: In(ids) },
+    });
+  }
 
   async findAll(options: QueryParams) {
     let query = this.eventsRepository.createQueryBuilder('events');
@@ -76,6 +89,7 @@ export class EventsService {
         createdBy: user,
       });
       await this.eventsRepository.save(newEvent);
+      this.eventsSearchService.indexPost(newEvent);
       return newEvent;
     } catch (error) {
       if (error?.code === PostgresErrorCode.UniqueViolation) {
